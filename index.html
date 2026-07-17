@@ -321,6 +321,29 @@ h1 .verb {
 .chat-input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
 .chat-input:disabled { opacity: 0.5; }
 
+/* Login gate */
+.gate {
+  position: fixed; inset: 0;
+  z-index: 100;
+  background: var(--color-paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+.gate[hidden] { display: none; }
+.gate-box { width: 100%; max-width: 22rem; text-align: center; }
+.gate-box h2 {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-sm);
+}
+.gate-box p { color: var(--color-ink-2); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+.gate-box form { display: flex; gap: var(--space-xs); }
+.gate-error { color: var(--color-error); font-size: var(--text-sm); margin-top: var(--space-sm); min-height: 1.4em; }
+
 footer {
   margin-top: var(--space-2xl);
   padding: var(--space-lg) 0;
@@ -367,6 +390,18 @@ footer {
   </footer>
 </div>
 
+<div class="gate" id="gate" hidden>
+  <div class="gate-box">
+    <h2>KI-Briefing</h2>
+    <p>Private App — bitte Zugangsschlüssel eingeben.</p>
+    <form id="gateForm">
+      <input class="chat-input" id="gateInput" type="password" placeholder="Schlüssel" autocomplete="current-password">
+      <button class="btn btn-accent" type="submit">Öffnen</button>
+    </form>
+    <p class="gate-error" id="gateError"></p>
+  </div>
+</div>
+
 <div class="sheet-backdrop" id="backdrop"></div>
 
 <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
@@ -385,6 +420,39 @@ footer {
 var API = "https://flowi-n8n.de/webhook";
 var articles = [];
 var chatContext = "";
+var appKey = localStorage.getItem("ki-briefing-key") || "";
+
+function api(path, extra) {
+  var body = extra || {};
+  body.schluessel = appKey;
+  return fetch(API + path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  }).then(function (r) {
+    if (r.status === 401) { showGate("Schlüssel stimmt nicht — bitte neu eingeben."); throw new Error("401"); }
+    if (!r.ok) throw new Error(r.status);
+    return r;
+  });
+}
+
+var gate = document.getElementById("gate");
+function showGate(msg) {
+  localStorage.removeItem("ki-briefing-key");
+  document.getElementById("gateError").textContent = msg || "";
+  gate.hidden = false;
+  document.getElementById("gateInput").focus();
+}
+document.getElementById("gateForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var v = document.getElementById("gateInput").value.trim();
+  if (!v) return;
+  appKey = v;
+  localStorage.setItem("ki-briefing-key", v);
+  gate.hidden = true;
+  document.getElementById("gateInput").value = "";
+  loadNews();
+});
 
 function el(tag, cls, text) {
   var e = document.createElement(tag);
@@ -472,8 +540,9 @@ function render() {
 }
 
 function loadNews() {
-  fetch(API + "/ki-news")
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+  if (!appKey) { showGate(""); return; }
+  api("/ki-news")
+    .then(function (r) { return r.json(); })
     .then(function (data) {
       articles = Array.isArray(data) ? data : [data];
       articles = articles.filter(function (a) { return a && a.title; });
@@ -482,6 +551,7 @@ function loadNews() {
     .catch(function () {
       var feed = document.getElementById("feed");
       feed.innerHTML = "";
+      if (!gate.hidden) return;
       var s = el("div", "state");
       s.innerHTML = "<strong>News konnten nicht geladen werden.</strong><br>Prüfe deine Internetverbindung und versuche es erneut.";
       var retry = el("button", "btn", "Erneut versuchen");
@@ -555,12 +625,8 @@ function sendQuestion(question) {
   chatInput.disabled = true;
   chatSend.disabled = true;
 
-  fetch(API + "/ki-chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ frage: question, kontext: chatContext })
-  })
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+  api("/ki-chat", { frage: question, kontext: chatContext })
+    .then(function (r) { return r.json(); })
     .then(function (data) {
       thinking.classList.remove("thinking");
       thinking.textContent = data.antwort || "Keine Antwort erhalten.";
@@ -593,7 +659,7 @@ document.getElementById("refreshBtn").addEventListener("click", function () {
   var btn = this;
   btn.dataset.state = "loading";
   btn.textContent = "Sammle …";
-  fetch(API + "/ki-collect").catch(function () {});
+  api("/ki-collect").catch(function () {});
   setTimeout(function () {
     loadNews();
     btn.dataset.state = "success";
