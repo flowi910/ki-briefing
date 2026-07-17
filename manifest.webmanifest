@@ -1,0 +1,15 @@
+{
+  "name": "KI-Briefing",
+  "short_name": "KI-Briefing",
+  "description": "Tägliches deutsches KI-News-Briefing mit Tutor-Chat",
+  "lang": "de",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#14141f",
+  "theme_color": "#14141f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}
