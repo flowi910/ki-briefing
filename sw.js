@@ -1,4 +1,4 @@
-var CACHE = "ki-briefing-v4";
+var CACHE = "ki-briefing-v5";
 var SHELL = ["./", "./index.html", "./tokens.css", "./icon.svg", "./manifest.webmanifest"];
 
 self.addEventListener("install", function (e) {

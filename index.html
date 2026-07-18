@@ -550,6 +550,13 @@ footer {
   flex-wrap: wrap;
 }
 
+/* Desktop: zwei Spalten */
+@media (min-width: 900px) {
+  .wrap { max-width: 1100px; }
+  .feed { grid-template-columns: 1fr 1fr; align-items: start; }
+  .sheet { max-width: 680px; margin: 0 auto; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .card { animation: none; }
   .skeleton { animation: none; }
@@ -758,6 +765,8 @@ function countUp(elm, target) {
     if (p < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
+  /* Sicherheitsnetz: falls der Tab im Hintergrund ist und die Animation pausiert */
+  setTimeout(function () { elm.textContent = String(target); }, dur + 200);
 }
 function renderStats() {
   var now = Date.now();
