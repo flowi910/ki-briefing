@@ -54,7 +54,7 @@ body::after {
 /* Header */
 header {
   padding-top: calc(env(safe-area-inset-top) + var(--space-xl));
-  padding-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
 }
 .kicker {
   font-family: var(--font-mono);
@@ -84,7 +84,7 @@ h1 .verb {
   justify-content: space-between;
   gap: var(--space-md);
 }
-.header-actions { display: flex; gap: var(--space-xs); flex-shrink: 0; }
+.header-actions { display: flex; gap: var(--space-xs); flex-shrink: 0; align-items: center; }
 
 /* Buttons */
 .btn {
@@ -114,6 +114,94 @@ h1 .verb {
 }
 .btn-accent:hover { background: var(--color-accent-deep); border-color: var(--color-accent-deep); }
 
+.icon-btn {
+  width: 2.6rem; height: 2.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.icon-btn svg { width: 1.15rem; height: 1.15rem; display: block; }
+.icon-btn.spin svg { animation: rotate 1s linear infinite; }
+@keyframes rotate { to { transform: rotate(360deg); } }
+
+/* Stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+.stat {
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+}
+.stat b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: 1.15;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+.stat span {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+/* Filter row */
+.toolbar { margin-bottom: var(--space-md); display: grid; gap: var(--space-xs); }
+.search {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  color: var(--color-ink);
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  padding: 0.55em 1.2em;
+}
+.search::placeholder { color: var(--color-ink-3); }
+.search:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+.filters {
+  display: flex;
+  gap: var(--space-xs);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+.filters::-webkit-scrollbar { display: none; }
+.filter-chip {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-ink-2);
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  padding: 0.45em 1em;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.filter-chip:hover { border-color: var(--color-accent); }
+.filter-chip:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.filter-chip.on {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
 /* Feed */
 .feed { display: grid; gap: var(--space-md); grid-template-columns: minmax(0, 1fr); }
 .card {
@@ -122,7 +210,9 @@ h1 .verb {
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   animation: rise var(--dur-med) var(--ease-out) both;
+  transition: border-color var(--dur-fast) var(--ease-out);
 }
+.card:hover { border-color: oklch(42% 0.04 75); }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .card-meta {
   display: flex;
@@ -135,6 +225,12 @@ h1 .verb {
   color: var(--color-ink-3);
   margin-bottom: var(--space-sm);
   flex-wrap: wrap;
+}
+.src-dot {
+  width: 0.45rem; height: 0.45rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
 }
 .badge-new {
   color: var(--color-accent-ink);
@@ -232,7 +328,7 @@ h1 .verb {
   border: 1px solid var(--color-line);
   border-bottom: none;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  max-height: 82dvh;
+  max-height: 88dvh;
   display: flex;
   flex-direction: column;
   transform: translateY(105%);
@@ -247,6 +343,7 @@ h1 .verb {
   gap: var(--space-md);
   padding: var(--space-md) var(--space-lg);
   border-bottom: 1px solid var(--color-line);
+  flex-shrink: 0;
 }
 .sheet-head h3 {
   font-family: var(--font-display);
@@ -274,6 +371,91 @@ h1 .verb {
   min-height: 0;
 }
 .sheet-body p.explain { color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.7; }
+
+/* Settings form */
+.field { margin-bottom: var(--space-lg); }
+.field-label {
+  display: block;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-2xs);
+}
+.field-hint {
+  color: var(--color-ink-3);
+  font-size: var(--text-xs);
+  margin-bottom: var(--space-sm);
+  line-height: 1.5;
+}
+.seg { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-ink-2);
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  padding: 0.5em 1.1em;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.seg label:hover { border-color: var(--color-accent); }
+.seg input:checked + label {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+.seg input:focus-visible + label { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.textarea {
+  width: 100%;
+  min-height: 5.5rem;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  resize: vertical;
+}
+.textarea::placeholder { color: var(--color-ink-3); }
+.textarea:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+.settings-actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.settings-note {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-3);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + var(--space-lg));
+  transform: translate(-50%, 150%);
+  z-index: 60;
+  background: var(--color-paper-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: 0.7em 1.4em;
+  max-width: min(92vw, 26rem);
+  text-align: center;
+  transition: transform var(--dur-med) var(--ease-out);
+  pointer-events: none;
+}
+.toast.show { transform: translate(-50%, 0); }
+.toast.ok { border-color: var(--color-success); }
+.toast.err { border-color: var(--color-error); }
 
 /* Chat */
 .chat-log { display: grid; gap: var(--space-sm); }
@@ -305,6 +487,7 @@ h1 .verb {
   gap: var(--space-xs);
   padding: var(--space-md) var(--space-lg);
   border-top: 1px solid var(--color-line);
+  flex-shrink: 0;
 }
 .chat-input {
   flex: 1;
@@ -361,22 +544,39 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .card { animation: none; }
   .skeleton { animation: none; }
-  .sheet, .sheet-backdrop, .btn, .chip { transition-duration: 1ms; }
+  .icon-btn.spin svg { animation: none; }
+  .sheet, .sheet-backdrop, .btn, .chip, .toast { transition-duration: 1ms; }
 }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <p class="kicker">Tägliches Briefing · Deutsch</p>
+    <p class="kicker" id="dateline">Tägliches Briefing · Deutsch</p>
     <div class="header-row">
       <h1>Was die KI-Welt heute <span class="verb">bewegt</span>.</h1>
       <div class="header-actions">
-        <button class="btn" id="refreshBtn" type="button">Aktualisieren</button>
+        <button class="btn icon-btn" id="refreshBtn" type="button" aria-label="Neue Artikel sammeln" title="Neue Artikel sammeln">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
+        </button>
+        <button class="btn icon-btn" id="settingsBtn" type="button" aria-label="Einstellungen" title="Einstellungen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
         <button class="btn btn-accent" id="tutorBtn" type="button">Fragen</button>
       </div>
     </div>
   </header>
+
+  <div class="stats" id="stats" hidden>
+    <div class="stat"><b id="statToday">0</b><span>Heute</span></div>
+    <div class="stat"><b id="statWeek">0</b><span>7 Tage</span></div>
+    <div class="stat"><b id="statTotal">0</b><span>Gesamt</span></div>
+  </div>
+
+  <div class="toolbar" id="toolbar" hidden>
+    <input class="search" id="searchInput" type="search" placeholder="Artikel durchsuchen …" autocomplete="off">
+    <div class="filters" id="filters" role="group" aria-label="Artikel filtern"></div>
+  </div>
 
   <main id="feed" class="feed" aria-live="polite">
     <div class="skeleton"></div>
@@ -416,11 +616,60 @@ footer {
   </form>
 </section>
 
+<section class="sheet" id="settingsSheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="sheet-head">
+    <h3 id="settingsTitle">Briefing anpassen</h3>
+    <button class="sheet-close" id="settingsClose" type="button" aria-label="Schließen">×</button>
+  </div>
+  <div class="sheet-body">
+    <form id="settingsForm">
+      <div class="field">
+        <span class="field-label">Kernpunkt der Zusammenfassungen</span>
+        <p class="field-hint">Worauf soll die KI beim Zusammenfassen den Schwerpunkt legen?</p>
+        <div class="seg" role="radiogroup" aria-label="Kernpunkt">
+          <input type="radio" name="fokus" value="ausgewogen" id="f-ausgewogen"><label for="f-ausgewogen">Ausgewogen</label>
+          <input type="radio" name="fokus" value="technik" id="f-technik"><label for="f-technik">Technik</label>
+          <input type="radio" name="fokus" value="business" id="f-business"><label for="f-business">Business</label>
+          <input type="radio" name="fokus" value="einsteiger" id="f-einsteiger"><label for="f-einsteiger">Einsteiger</label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">Länge</span>
+        <div class="seg" role="radiogroup" aria-label="Länge">
+          <input type="radio" name="laenge" value="kurz" id="l-kurz"><label for="l-kurz">Kurz · ~120 Wörter</label>
+          <input type="radio" name="laenge" value="mittel" id="l-mittel"><label for="l-mittel">Mittel · ~250</label>
+          <input type="radio" name="laenge" value="lang" id="l-lang"><label for="l-lang">Ausführlich · ~400</label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">Ton</span>
+        <div class="seg" role="radiogroup" aria-label="Ton">
+          <input type="radio" name="ton" value="locker" id="t-locker"><label for="t-locker">Locker</label>
+          <input type="radio" name="ton" value="sachlich" id="t-sachlich"><label for="t-sachlich">Sachlich</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="anweisung">Eigene Anweisung an die KI</label>
+        <p class="field-hint">Optional — wird jedem Zusammenfassungs-Prompt angehängt.</p>
+        <textarea class="textarea" id="anweisung" maxlength="500" placeholder="z. B.: Nenne immer konkrete Zahlen und Preise, wenn sie im Artikel stehen."></textarea>
+      </div>
+      <div class="settings-actions">
+        <button class="btn btn-accent" id="settingsSave" type="submit">Speichern</button>
+        <button class="btn" id="settingsCollect" type="button">Speichern &amp; jetzt sammeln</button>
+      </div>
+      <p class="settings-note">Änderungen gelten für alle Artikel, die ab der nächsten Sammlung zusammengefasst werden — bereits vorhandene Artikel bleiben unverändert.</p>
+    </form>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status"></div>
+
 <script>
 var API = "https://flowi-n8n.de/webhook";
 var articles = [];
 var chatContext = "";
 var appKey = localStorage.getItem("ki-briefing-key") || "";
+var filterState = { quelle: "alle", suche: "" };
 
 function api(path, extra) {
   var body = extra || {};
@@ -461,6 +710,20 @@ function el(tag, cls, text) {
   return e;
 }
 
+/* Toast */
+var toastTimer = null;
+function toast(msg, kind) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show" + (kind ? " " + kind : "");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { t.className = "toast"; }, 3200);
+}
+
+/* Datum im Header */
+document.getElementById("dateline").textContent =
+  new Date().toLocaleDateString("de-DE", { weekday: "long", day: "numeric", month: "long" }) + " · Dein Briefing";
+
 function timeLabel(iso) {
   var d = new Date(iso);
   if (isNaN(d)) return "";
@@ -470,30 +733,116 @@ function timeLabel(iso) {
   return d.toLocaleDateString("de-DE", { day: "2-digit", month: "short" });
 }
 
+function readMinutes(text) {
+  var words = (text || "").split(/\s+/).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+/* Stats mit Zähl-Animation */
+function countUp(elm, target) {
+  var start = null, dur = 700, from = 0;
+  if (target === 0) { elm.textContent = "0"; return; }
+  function step(ts) {
+    if (!start) start = ts;
+    var p = Math.min((ts - start) / dur, 1);
+    elm.textContent = String(Math.round(from + (target - from) * (1 - Math.pow(1 - p, 3))));
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function renderStats() {
+  var now = Date.now();
+  var today = 0, week = 0;
+  articles.forEach(function (a) {
+    var t = new Date(a.pubDate || a.createdAt).getTime();
+    if (now - t < 24 * 3600000) today++;
+    if (now - t < 7 * 24 * 3600000) week++;
+  });
+  document.getElementById("stats").hidden = false;
+  countUp(document.getElementById("statToday"), today);
+  countUp(document.getElementById("statWeek"), week);
+  countUp(document.getElementById("statTotal"), articles.length);
+}
+
+/* Filterleiste */
+function sourceOf(a) {
+  var src = a.source;
+  if (!src || src === "Unbekannt") {
+    var m = (a.url || "").match(/^https?:\/\/([^\/]+)/);
+    src = m ? m[1].replace("www.", "") : "Quelle";
+  }
+  return src;
+}
+function renderFilters() {
+  var box = document.getElementById("filters");
+  box.innerHTML = "";
+  var sources = [];
+  articles.forEach(function (a) {
+    var s = sourceOf(a);
+    if (sources.indexOf(s) === -1) sources.push(s);
+  });
+  var opts = [{ id: "alle", label: "Alle" }, { id: "heute", label: "Heute" }].concat(
+    sources.map(function (s) { return { id: s, label: s }; })
+  );
+  opts.forEach(function (o) {
+    var b = el("button", "filter-chip" + (filterState.quelle === o.id ? " on" : ""), o.label);
+    b.type = "button";
+    b.addEventListener("click", function () {
+      filterState.quelle = o.id;
+      renderFilters();
+      render();
+    });
+    box.appendChild(b);
+  });
+  document.getElementById("toolbar").hidden = false;
+}
+document.getElementById("searchInput").addEventListener("input", function () {
+  filterState.suche = this.value.trim().toLowerCase();
+  render();
+});
+
+function visibleArticles() {
+  return articles.filter(function (a) {
+    if (filterState.quelle === "heute") {
+      if (Date.now() - new Date(a.pubDate || a.createdAt).getTime() >= 24 * 3600000) return false;
+    } else if (filterState.quelle !== "alle") {
+      if (sourceOf(a) !== filterState.quelle) return false;
+    }
+    if (filterState.suche) {
+      var hay = (a.title + " " + (a.summary || "")).toLowerCase();
+      if (hay.indexOf(filterState.suche) === -1) return false;
+    }
+    return true;
+  });
+}
+
 function render() {
   var feed = document.getElementById("feed");
   feed.innerHTML = "";
+  var list = visibleArticles();
   if (!articles.length) {
     var s = el("div", "state");
-    s.innerHTML = "<strong>Noch keine News da.</strong><br>Tippe oben auf „Aktualisieren“ — das Sammeln dauert etwa eine Minute.";
+    s.innerHTML = "<strong>Noch keine News da.</strong><br>Tippe oben auf das Aktualisieren-Symbol — das Sammeln dauert etwa eine Minute.";
     feed.appendChild(s);
     return;
   }
-  articles.forEach(function (a, i) {
+  if (!list.length) {
+    feed.appendChild(el("div", "state", "Keine Artikel passen zu diesem Filter."));
+    return;
+  }
+  list.forEach(function (a, i) {
     var card = el("article", "card");
     card.style.animationDelay = Math.min(i * 60, 360) + "ms";
 
     var meta = el("div", "card-meta");
     var isNew = (Date.now() - new Date(a.createdAt).getTime()) < 24 * 3600000;
     if (isNew) meta.appendChild(el("span", "badge-new", "Neu"));
-    var src = a.source;
-    if (!src || src === "Unbekannt") {
-      var m = (a.url || "").match(/^https?:\/\/([^\/]+)/);
-      src = m ? m[1].replace("www.", "") : "Quelle";
-    }
-    meta.appendChild(el("span", null, src));
+    meta.appendChild(el("span", "src-dot"));
+    meta.appendChild(el("span", null, sourceOf(a)));
     meta.appendChild(el("span", null, "·"));
     meta.appendChild(el("span", null, timeLabel(a.pubDate || a.createdAt)));
+    meta.appendChild(el("span", null, "·"));
+    meta.appendChild(el("span", null, readMinutes(a.summary) + " Min"));
     card.appendChild(meta);
 
     card.appendChild(el("h2", null, a.title));
@@ -546,6 +895,8 @@ function loadNews() {
     .then(function (data) {
       articles = Array.isArray(data) ? data : [data];
       articles = articles.filter(function (a) { return a && a.title; });
+      renderStats();
+      renderFilters();
       render();
     })
     .catch(function () {
@@ -564,7 +915,7 @@ function loadNews() {
     });
 }
 
-/* Bottom sheet */
+/* Bottom sheet (Begriffe + Chat) */
 var sheet = document.getElementById("sheet");
 var backdrop = document.getElementById("backdrop");
 var sheetTitle = document.getElementById("sheetTitle");
@@ -575,6 +926,7 @@ var chatSend = document.getElementById("chatSend");
 var chatLog = null;
 
 function openSheet(title, withChat) {
+  closeSettings();
   sheetTitle.textContent = title;
   sheetBody.innerHTML = "";
   chatForm.hidden = !withChat;
@@ -583,12 +935,12 @@ function openSheet(title, withChat) {
 }
 function closeSheet() {
   sheet.classList.remove("show");
-  backdrop.classList.remove("show");
+  if (!settingsSheet.classList.contains("show")) backdrop.classList.remove("show");
   chatLog = null;
 }
 document.getElementById("sheetClose").addEventListener("click", closeSheet);
-backdrop.addEventListener("click", closeSheet);
-document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeSheet(); closeSettings(); } });
+backdrop.addEventListener("click", function () { closeSheet(); closeSettings(); });
 
 function openTerm(term, article) {
   openSheet(term.begriff, false);
@@ -654,21 +1006,96 @@ chatForm.addEventListener("submit", function (e) {
 
 document.getElementById("tutorBtn").addEventListener("click", function () { openChat(null); });
 
-/* Refresh: neue Artikel sammeln lassen, dann neu laden */
-document.getElementById("refreshBtn").addEventListener("click", function () {
-  var btn = this;
+/* Einstellungen */
+var settingsSheet = document.getElementById("settingsSheet");
+var settingsForm = document.getElementById("settingsForm");
+
+function setRadio(name, value) {
+  var input = settingsForm.querySelector('input[name="' + name + '"][value="' + value + '"]');
+  if (input) input.checked = true;
+}
+function getRadio(name) {
+  var input = settingsForm.querySelector('input[name="' + name + '"]:checked');
+  return input ? input.value : "";
+}
+
+function openSettings() {
+  closeSheet();
+  settingsSheet.classList.add("show");
+  backdrop.classList.add("show");
+  setRadio("fokus", "ausgewogen");
+  setRadio("laenge", "mittel");
+  setRadio("ton", "locker");
+  api("/ki-einstellungen", { aktion: "lesen" })
+    .then(function (r) { return r.json(); })
+    .then(function (s) {
+      if (s.fokus) setRadio("fokus", s.fokus);
+      if (s.laenge) setRadio("laenge", s.laenge);
+      if (s.ton) setRadio("ton", s.ton);
+      document.getElementById("anweisung").value = s.anweisung || "";
+    })
+    .catch(function () { toast("Einstellungen konnten nicht geladen werden.", "err"); });
+}
+function closeSettings() {
+  settingsSheet.classList.remove("show");
+  if (!sheet.classList.contains("show")) backdrop.classList.remove("show");
+}
+document.getElementById("settingsBtn").addEventListener("click", openSettings);
+document.getElementById("settingsClose").addEventListener("click", closeSettings);
+
+function saveSettings() {
+  var btn = document.getElementById("settingsSave");
   btn.dataset.state = "loading";
-  btn.textContent = "Sammle …";
+  return api("/ki-einstellungen", {
+    aktion: "speichern",
+    fokus: getRadio("fokus"),
+    laenge: getRadio("laenge"),
+    ton: getRadio("ton"),
+    anweisung: document.getElementById("anweisung").value.trim()
+  })
+    .then(function (r) { return r.json(); })
+    .then(function () {
+      delete btn.dataset.state;
+      toast("Gespeichert — gilt ab der nächsten Sammlung.", "ok");
+    })
+    .catch(function (err) {
+      delete btn.dataset.state;
+      toast("Speichern fehlgeschlagen.", "err");
+      throw err;
+    });
+}
+settingsForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  saveSettings().catch(function () {});
+});
+document.getElementById("settingsCollect").addEventListener("click", function () {
+  saveSettings()
+    .then(function () {
+      closeSettings();
+      startCollect();
+    })
+    .catch(function () {});
+});
+
+/* Sammeln: neue Artikel holen lassen, dann neu laden */
+var collecting = false;
+function startCollect() {
+  if (collecting) return;
+  collecting = true;
+  var btn = document.getElementById("refreshBtn");
+  btn.classList.add("spin");
+  btn.disabled = true;
+  toast("Neue Artikel werden gesammelt und zusammengefasst — dauert etwa eine Minute.");
   api("/ki-collect").catch(function () {});
   setTimeout(function () {
     loadNews();
-    btn.dataset.state = "success";
-    btn.textContent = "Fertig";
-    setTimeout(function () { delete btn.dataset.state; btn.textContent = "Aktualisieren"; }, 2000);
+    btn.classList.remove("spin");
+    btn.disabled = false;
+    collecting = false;
+    toast("Briefing aktualisiert.", "ok");
   }, 65000);
-  var s = el("div", "state", "Neue Artikel werden gesammelt und zusammengefasst — dauert etwa eine Minute …");
-  document.getElementById("feed").prepend(s);
-});
+}
+document.getElementById("refreshBtn").addEventListener("click", startCollect);
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js").catch(function () {});
