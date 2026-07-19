@@ -1,25 +1,25 @@
-/* Hallmark · genre: atmospheric · macrostructure: app-feed (bespoke, component-led) · theme: Nebula Builder Black
- * tone: pure-black editor premium · accent: blue ~260° gradient · nav: app header (N9-adjacent) · footer: Ft2 inline
+/* Hallmark · genre: atmospheric · macrostructure: app-feed (bespoke, component-led) · theme: Editorial Blue Night
+ * tone: dark editorial premium · accent: blue ~260° gradient · nav: app header (N9-adjacent) · footer: Ft2 inline
  * Hallmark · pre-emit critique: P4 H5 E4 S4 R5 V4
  */
 :root {
-  /* paper: pure-black builder band */
-  --color-paper: oklch(9% 0.004 260);
-  --color-paper-2: oklch(13% 0.006 260);
-  --color-paper-3: oklch(18% 0.008 260);
+  /* paper: page sits visibly behind card band */
+  --color-paper: oklch(13% 0.006 260);
+  --color-paper-2: oklch(20% 0.009 260);
+  --color-paper-3: oklch(25% 0.011 260);
   --color-ink: oklch(96% 0.002 260);
   --color-ink-2: oklch(76% 0.006 260);
-  --color-ink-3: oklch(56% 0.008 260);
+  --color-ink-3: oklch(58% 0.008 260);
   --color-accent: oklch(62% 0.19 260);
   --color-accent-deep: oklch(52% 0.21 264);
   --color-accent-ink: oklch(98% 0.004 260);
-  --color-line: oklch(26% 0.01 260);
+  --color-line: oklch(31% 0.012 260);
   --color-error: oklch(68% 0.17 25);
   --color-success: oklch(75% 0.13 150);
   --color-focus: oklch(62% 0.19 260);
 
-  --font-display: "Inter", -apple-system, system-ui, sans-serif;
-  --font-body: "Inter", -apple-system, system-ui, sans-serif;
+  --font-display: -apple-system, system-ui, sans-serif;
+  --font-body: -apple-system, system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 
   --space-2xs: 0.25rem;

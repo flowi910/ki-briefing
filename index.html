@@ -12,9 +12,6 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <style>
 /* Hallmark · genre: atmospheric · theme: Lumen Night Foundry · see tokens.css for stamp */
@@ -67,15 +64,16 @@ header {
 h1 {
   font-family: var(--font-display);
   font-style: normal;
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--text-display);
   line-height: 1.05;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   overflow-wrap: anywhere;
   min-width: 0;
 }
 h1 .verb {
   color: var(--color-accent);
+  border-bottom: 2px solid var(--color-accent);
 }
 .header-row {
   display: flex;
