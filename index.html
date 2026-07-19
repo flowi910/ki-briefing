@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <style>
 /* Hallmark · genre: atmospheric · theme: Lumen Night Foundry · see tokens.css for stamp */
@@ -41,12 +41,12 @@ body::before, body::after {
 body::before {
   width: 55vw; height: 55vw; max-width: 420px; max-height: 420px;
   top: -12vh; right: -18vw;
-  background: radial-gradient(circle, oklch(45% 0.09 60 / 0.5), transparent 70%);
+  background: radial-gradient(circle, oklch(45% 0.16 260 / 0.35), transparent 70%);
 }
 body::after {
   width: 45vw; height: 45vw; max-width: 340px; max-height: 340px;
   bottom: -10vh; left: -15vw;
-  background: radial-gradient(circle, oklch(38% 0.08 300 / 0.4), transparent 70%);
+  background: radial-gradient(circle, oklch(40% 0.15 285 / 0.28), transparent 70%);
 }
 
 .wrap { max-width: 640px; margin: 0 auto; padding: 0 var(--space-md); }
@@ -67,16 +67,15 @@ header {
 h1 {
   font-family: var(--font-display);
   font-style: normal;
-  font-weight: 400;
+  font-weight: 800;
   font-size: var(--text-display);
   line-height: 1.05;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   overflow-wrap: anywhere;
   min-width: 0;
 }
 h1 .verb {
   color: var(--color-accent);
-  border-bottom: 2px solid var(--color-accent);
 }
 .header-row {
   display: flex;
@@ -108,11 +107,12 @@ h1 .verb {
 .btn[data-state="error"] { border-color: var(--color-error); color: var(--color-error); }
 .btn[data-state="success"] { border-color: var(--color-success); color: var(--color-success); }
 .btn-accent {
-  background: var(--color-accent);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-deep));
   border-color: var(--color-accent);
   color: var(--color-accent-ink);
+  font-weight: 600;
 }
-.btn-accent:hover { background: var(--color-accent-deep); border-color: var(--color-accent-deep); }
+.btn-accent:hover { filter: brightness(1.1); }
 
 .icon-btn {
   width: 2.6rem; height: 2.6rem;
@@ -143,7 +143,7 @@ h1 .verb {
 .stat b {
   display: block;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--text-xl);
   line-height: 1.15;
   color: var(--color-accent);
@@ -251,7 +251,7 @@ h1 .verb {
 .card h2 {
   font-family: var(--font-display);
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--text-xl);
   line-height: 1.2;
   letter-spacing: -0.005em;
@@ -357,7 +357,7 @@ h1 .verb {
 .sheet-head h3 {
   font-family: var(--font-display);
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--text-lg);
   overflow-wrap: anywhere;
   min-width: 0;
@@ -524,7 +524,7 @@ h1 .verb {
 }
 .quiz-q {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--text-lg);
   line-height: 1.3;
   margin-bottom: var(--space-md);
@@ -553,7 +553,7 @@ h1 .verb {
 .quiz-score b {
   display: block;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 800;
   font-size: var(--text-display);
   color: var(--color-accent);
   margin-bottom: var(--space-2xs);
@@ -575,7 +575,7 @@ h1 .verb {
 .gate-box h2 {
   font-family: var(--font-display);
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--text-xl);
   margin-bottom: var(--space-sm);
 }
