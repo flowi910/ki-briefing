@@ -513,6 +513,53 @@ h1 .verb {
 .chat-input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
 .chat-input:disabled { opacity: 0.5; }
 
+/* Quiz */
+.quiz-progress {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin-bottom: var(--space-sm);
+}
+.quiz-q {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-lg);
+  line-height: 1.3;
+  margin-bottom: var(--space-md);
+}
+.quiz-opts { display: grid; gap: var(--space-xs); margin-bottom: var(--space-md); }
+.quiz-opt {
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 0.7em 1em;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.quiz-opt:hover:not(:disabled) { border-color: var(--color-accent); }
+.quiz-opt:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.quiz-opt:disabled { cursor: default; }
+.quiz-opt.correct { border-color: var(--color-success); color: var(--color-success); }
+.quiz-opt.wrong { border-color: var(--color-error); color: var(--color-error); }
+.quiz-explain { color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.65; margin-bottom: var(--space-md); }
+.quiz-score { text-align: center; padding: var(--space-lg) 0; }
+.quiz-score b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-display);
+  color: var(--color-accent);
+  margin-bottom: var(--space-2xs);
+}
+.quiz-score span { color: var(--color-ink-3); font-size: var(--text-sm); }
+
 /* Login gate */
 .gate {
   position: fixed; inset: 0;
@@ -578,6 +625,7 @@ footer {
         <button class="btn icon-btn" id="settingsBtn" type="button" aria-label="Einstellungen" title="Einstellungen">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </button>
+        <button class="btn" id="quizAllBtn" type="button">Quiz</button>
         <button class="btn btn-accent" id="tutorBtn" type="button">Fragen</button>
       </div>
     </div>
@@ -676,6 +724,14 @@ footer {
       <p class="settings-note">Änderungen gelten für alle Artikel, die ab der nächsten Sammlung zusammengefasst werden — bereits vorhandene Artikel bleiben unverändert.</p>
     </form>
   </div>
+</section>
+
+<section class="sheet" id="quizSheet" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+  <div class="sheet-head">
+    <h3 id="quizTitle">Quiz</h3>
+    <button class="sheet-close" id="quizClose" type="button" aria-label="Schließen">×</button>
+  </div>
+  <div class="sheet-body" id="quizBody"></div>
 </section>
 
 <div class="toast" id="toast" role="status"></div>
@@ -904,6 +960,10 @@ function render() {
     ask.type = "button";
     ask.addEventListener("click", function () { openChat(a); });
     actions.appendChild(ask);
+    var quizBtn = el("button", "btn", "Quiz");
+    quizBtn.type = "button";
+    quizBtn.addEventListener("click", function () { openQuiz(a); });
+    actions.appendChild(quizBtn);
     var link = el("a");
     link.href = a.url;
     link.target = "_blank";
@@ -955,6 +1015,7 @@ var chatLog = null;
 
 function openSheet(title, withChat) {
   closeSettings();
+  closeQuiz();
   sheetTitle.textContent = title;
   sheetBody.innerHTML = "";
   chatForm.hidden = !withChat;
@@ -963,12 +1024,12 @@ function openSheet(title, withChat) {
 }
 function closeSheet() {
   sheet.classList.remove("show");
-  if (!settingsSheet.classList.contains("show")) backdrop.classList.remove("show");
+  if (!settingsSheet.classList.contains("show") && !quizSheet.classList.contains("show")) backdrop.classList.remove("show");
   chatLog = null;
 }
 document.getElementById("sheetClose").addEventListener("click", closeSheet);
-document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeSheet(); closeSettings(); } });
-backdrop.addEventListener("click", function () { closeSheet(); closeSettings(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeSheet(); closeSettings(); closeQuiz(); } });
+backdrop.addEventListener("click", function () { closeSheet(); closeSettings(); closeQuiz(); });
 
 function openTerm(term, article) {
   openSheet(term.begriff, false);
@@ -1049,6 +1110,7 @@ function getRadio(name) {
 
 function openSettings() {
   closeSheet();
+  closeQuiz();
   settingsSheet.classList.add("show");
   backdrop.classList.add("show");
   setRadio("fokus", "ausgewogen");
@@ -1066,10 +1128,107 @@ function openSettings() {
 }
 function closeSettings() {
   settingsSheet.classList.remove("show");
-  if (!sheet.classList.contains("show")) backdrop.classList.remove("show");
+  if (!sheet.classList.contains("show") && !quizSheet.classList.contains("show")) backdrop.classList.remove("show");
 }
 document.getElementById("settingsBtn").addEventListener("click", openSettings);
 document.getElementById("settingsClose").addEventListener("click", closeSettings);
+
+/* Quiz */
+var quizSheet = document.getElementById("quizSheet");
+var quizTitle = document.getElementById("quizTitle");
+var quizBody = document.getElementById("quizBody");
+var quizState = { fragen: [], index: 0, score: 0 };
+
+function openQuiz(article) {
+  closeSheet();
+  closeSettings();
+  quizState = { fragen: [], index: 0, score: 0 };
+  quizTitle.textContent = article ? "Quiz: " + article.title : "Quiz: KI-Wissen";
+  quizBody.innerHTML = "";
+  quizBody.appendChild(el("div", "state", "Fragen werden erstellt …"));
+  quizSheet.classList.add("show");
+  backdrop.classList.add("show");
+
+  var kontext = article
+    ? article.title + "\n" + (article.summary || "")
+    : visibleArticles().slice(0, 6).map(function (a) { return a.title + ": " + (a.summary || ""); }).join("\n\n");
+
+  api("/ki-quiz", { modus: article ? "artikel" : "woche", kontext: kontext })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      quizState.fragen = (data.output && data.output.fragen) || data.fragen || [];
+      if (!quizState.fragen.length) throw new Error("leer");
+      renderQuizQuestion();
+    })
+    .catch(function () {
+      quizBody.innerHTML = "";
+      var s = el("div", "state", "Quiz konnte nicht erstellt werden.");
+      var retry = el("button", "btn", "Erneut versuchen");
+      retry.type = "button";
+      retry.style.marginTop = "1rem";
+      retry.addEventListener("click", function () { openQuiz(article); });
+      s.appendChild(document.createElement("br"));
+      s.appendChild(retry);
+      quizBody.appendChild(s);
+    });
+}
+function closeQuiz() {
+  quizSheet.classList.remove("show");
+  if (!sheet.classList.contains("show") && !settingsSheet.classList.contains("show")) backdrop.classList.remove("show");
+}
+document.getElementById("quizClose").addEventListener("click", closeQuiz);
+
+function renderQuizQuestion() {
+  var q = quizState.fragen[quizState.index];
+  quizBody.innerHTML = "";
+  quizBody.appendChild(el("div", "quiz-progress", "Frage " + (quizState.index + 1) + " von " + quizState.fragen.length));
+  quizBody.appendChild(el("div", "quiz-q", q.frage));
+  var opts = el("div", "quiz-opts");
+  (q.optionen || []).forEach(function (opt, i) {
+    var b = el("button", "quiz-opt", opt);
+    b.type = "button";
+    b.addEventListener("click", function () { answerQuiz(i); });
+    opts.appendChild(b);
+  });
+  quizBody.appendChild(opts);
+}
+
+function answerQuiz(i) {
+  var q = quizState.fragen[quizState.index];
+  var opts = quizBody.querySelectorAll(".quiz-opt");
+  opts.forEach(function (b, idx) {
+    b.disabled = true;
+    if (idx === q.richtig) b.classList.add("correct");
+    else if (idx === i) b.classList.add("wrong");
+  });
+  if (i === q.richtig) quizState.score++;
+
+  if (q.erklaerung) quizBody.appendChild(el("p", "quiz-explain", q.erklaerung));
+  var next = el("button", "btn btn-accent", quizState.index < quizState.fragen.length - 1 ? "Nächste Frage" : "Ergebnis anzeigen");
+  next.type = "button";
+  next.addEventListener("click", function () {
+    quizState.index++;
+    if (quizState.index < quizState.fragen.length) renderQuizQuestion();
+    else renderQuizScore();
+  });
+  quizBody.appendChild(next);
+}
+
+function renderQuizScore() {
+  quizBody.innerHTML = "";
+  var box = el("div", "quiz-score");
+  box.appendChild(el("b", null, quizState.score + " / " + quizState.fragen.length));
+  box.appendChild(el("span", null, "richtig beantwortet"));
+  quizBody.appendChild(box);
+  var close = el("button", "btn btn-accent", "Schließen");
+  close.type = "button";
+  close.style.display = "block";
+  close.style.margin = "0 auto";
+  close.addEventListener("click", closeQuiz);
+  quizBody.appendChild(close);
+}
+
+document.getElementById("quizAllBtn").addEventListener("click", function () { openQuiz(null); });
 
 function saveSettings() {
   var btn = document.getElementById("settingsSave");
