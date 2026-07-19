@@ -382,12 +382,38 @@ h1 .verb {
 .sheet-body p.explain { color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.7; }
 
 /* Settings form */
-.field { margin-bottom: var(--space-lg); }
+.field {
+  margin-bottom: var(--space-md);
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+.field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-2xs);
+}
 .field-label {
   display: block;
   font-weight: 600;
   font-size: var(--text-sm);
   margin-bottom: var(--space-2xs);
+}
+.field-head .field-label { margin-bottom: 0; }
+.field-badge {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  background: var(--color-paper-3);
+  border-radius: var(--radius-pill);
+  padding: 0.2em 0.7em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .field-hint {
   color: var(--color-ink-3);
@@ -401,9 +427,9 @@ h1 .verb {
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--color-ink-2);
-  background: var(--color-paper);
+  background: var(--color-paper-2);
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   padding: 0.5em 1.1em;
   cursor: pointer;
   transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
@@ -688,7 +714,10 @@ footer {
   <div class="sheet-body">
     <form id="settingsForm">
       <div class="field">
-        <span class="field-label">Kernpunkt der Zusammenfassungen</span>
+        <div class="field-head">
+          <span class="field-label">Kernpunkt der Zusammenfassungen</span>
+          <span class="field-badge" id="badge-fokus">Ausgewogen</span>
+        </div>
         <p class="field-hint">Worauf soll die KI beim Zusammenfassen den Schwerpunkt legen?</p>
         <div class="seg" role="radiogroup" aria-label="Kernpunkt">
           <input type="radio" name="fokus" value="ausgewogen" id="f-ausgewogen"><label for="f-ausgewogen">Ausgewogen</label>
@@ -698,7 +727,10 @@ footer {
         </div>
       </div>
       <div class="field">
-        <span class="field-label">Länge</span>
+        <div class="field-head">
+          <span class="field-label">Länge</span>
+          <span class="field-badge" id="badge-laenge">Mittel</span>
+        </div>
         <div class="seg" role="radiogroup" aria-label="Länge">
           <input type="radio" name="laenge" value="kurz" id="l-kurz"><label for="l-kurz">Kurz · ~120 Wörter</label>
           <input type="radio" name="laenge" value="mittel" id="l-mittel"><label for="l-mittel">Mittel · ~250</label>
@@ -706,7 +738,10 @@ footer {
         </div>
       </div>
       <div class="field">
-        <span class="field-label">Ton</span>
+        <div class="field-head">
+          <span class="field-label">Ton</span>
+          <span class="field-badge" id="badge-ton">Locker</span>
+        </div>
         <div class="seg" role="radiogroup" aria-label="Ton">
           <input type="radio" name="ton" value="locker" id="t-locker"><label for="t-locker">Locker</label>
           <input type="radio" name="ton" value="sachlich" id="t-sachlich"><label for="t-sachlich">Sachlich</label>
@@ -1102,11 +1137,22 @@ var settingsForm = document.getElementById("settingsForm");
 function setRadio(name, value) {
   var input = settingsForm.querySelector('input[name="' + name + '"][value="' + value + '"]');
   if (input) input.checked = true;
+  updateFieldBadge(name);
 }
 function getRadio(name) {
   var input = settingsForm.querySelector('input[name="' + name + '"]:checked');
   return input ? input.value : "";
 }
+function updateFieldBadge(name) {
+  var badge = document.getElementById("badge-" + name);
+  var input = settingsForm.querySelector('input[name="' + name + '"]:checked');
+  if (badge && input) badge.textContent = input.nextElementSibling.textContent.split(" · ")[0];
+}
+["fokus", "laenge", "ton"].forEach(function (name) {
+  settingsForm.querySelectorAll('input[name="' + name + '"]').forEach(function (input) {
+    input.addEventListener("change", function () { updateFieldBadge(name); });
+  });
+});
 
 function openSettings() {
   closeSheet();
