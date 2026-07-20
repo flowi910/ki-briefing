@@ -19,6 +19,9 @@
   --color-error: oklch(68% 0.17 25);
   --color-success: oklch(75% 0.13 150);
   --color-focus: oklch(62% 0.19 260);
+  --color-glow-1: oklch(45% 0.16 260 / 0.35);
+  --color-glow-2: oklch(40% 0.15 260 / 0.28);
+  --color-backdrop: oklch(10% 0.01 260 / 0.6);
 
   --font-display: "Playfair Display", Georgia, serif;
   --font-body: "Inter", -apple-system, system-ui, sans-serif;

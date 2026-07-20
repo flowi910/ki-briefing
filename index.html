@@ -38,12 +38,12 @@ body::before, body::after {
 body::before {
   width: 55vw; height: 55vw; max-width: 420px; max-height: 420px;
   top: -12vh; right: -18vw;
-  background: radial-gradient(circle, oklch(45% 0.16 260 / 0.35), transparent 70%);
+  background: radial-gradient(circle, var(--color-glow-1), transparent 70%);
 }
 body::after {
   width: 45vw; height: 45vw; max-width: 340px; max-height: 340px;
   bottom: -10vh; left: -15vw;
-  background: radial-gradient(circle, oklch(40% 0.15 285 / 0.28), transparent 70%);
+  background: radial-gradient(circle, var(--color-glow-2), transparent 70%);
 }
 
 .wrap { max-width: 640px; margin: 0 auto; padding: 0 var(--space-md); }
@@ -210,7 +210,7 @@ h1 .verb {
   animation: rise var(--dur-med) var(--ease-out) both;
   transition: border-color var(--dur-fast) var(--ease-out);
 }
-.card:hover { border-color: oklch(42% 0.04 75); }
+.card:hover { border-color: oklch(42% 0.04 260); }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .card-img {
   width: calc(100% + 2 * var(--space-lg));
@@ -320,7 +320,7 @@ h1 .verb {
 /* Bottom sheet */
 .sheet-backdrop {
   position: fixed; inset: 0;
-  background: oklch(10% 0.01 265 / 0.6);
+  background: var(--color-backdrop);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--dur-med) var(--ease-out);
@@ -624,7 +624,7 @@ footer {
 /* Desktop: zwei Spalten */
 @media (min-width: 900px) {
   .wrap { max-width: 1100px; }
-  .feed { grid-template-columns: 1fr 1fr; align-items: start; }
+  .feed { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
   .sheet { max-width: 680px; margin: 0 auto; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 }
 
@@ -945,7 +945,11 @@ function render() {
       var img = el("img", "card-img");
       img.src = a.bild;
       img.alt = "";
-      img.loading = "lazy";
+      if (i === 0) {
+        img.fetchPriority = "high";
+      } else {
+        img.loading = "lazy";
+      }
       img.referrerPolicy = "no-referrer";
       img.addEventListener("error", function () { img.remove(); });
       card.appendChild(img);
