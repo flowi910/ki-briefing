@@ -661,37 +661,117 @@ footer {
   .icon-btn.spin svg { animation: none; }
   .sheet, .sheet-backdrop, .btn, .chip, .toast { transition-duration: 1ms; }
 }
+
+/* ===== Newsroom Navbar ===== */
+.nav {
+  position: sticky; top: 0; z-index: 40;
+  display: flex; align-items: center; gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  background: color-mix(in oklab, var(--color-paper) 86%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-line);
+}
+.nav-search {
+  background: none; border: none; color: var(--color-ink-2); cursor: pointer;
+  display: inline-flex; padding: 0.35rem; border-radius: var(--radius-sm);
+}
+.nav-search:hover { color: var(--color-ink); }
+.nav-brand {
+  font-family: var(--font-body); font-weight: 800; font-size: var(--text-md);
+  letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap;
+}
+.nav-brand b { color: var(--color-accent); }
+.nav-cats {
+  display: flex; gap: var(--space-md); overflow-x: auto; scrollbar-width: none;
+  flex: 1; justify-content: flex-start; padding: 0 var(--space-xs);
+}
+@media (max-width: 720px) { .nav-brand { display: none; } }
+@media (min-width: 1200px) { .nav-cats { justify-content: center; } }
+.nav-cats::-webkit-scrollbar { display: none; }
+.nav-cat {
+  background: none; border: none; cursor: pointer; font: inherit;
+  font-weight: 700; font-size: var(--text-xs); letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--color-ink-3); white-space: nowrap;
+  padding: 0.35rem 0; border-bottom: 2px solid transparent; transition: color var(--dur-fast);
+}
+.nav-cat:hover { color: var(--color-ink); }
+.nav-cat.on { color: var(--color-ink); border-bottom-color: var(--color-accent); }
+.nav-actions { display: flex; align-items: center; gap: var(--space-xs); }
+.searchbar { padding: var(--space-sm) 0 0; }
+
+/* ===== Kategorie-Badges ===== */
+.cat-badge {
+  display: inline-block; font-family: var(--font-body); font-weight: 700;
+  font-size: var(--text-xs); letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 0.15em 0.6em; color: #06070c; border-radius: var(--radius-sm); flex-shrink: 0;
+}
+.cat-modelle      { background: oklch(66% 0.20 260); }
+.cat-business     { background: oklch(84% 0.19 145); }
+.cat-tools        { background: oklch(82% 0.16 75); }
+.cat-forschung    { background: oklch(74% 0.15 300); }
+.cat-recht        { background: oklch(70% 0.20 25); }
+.cat-gesellschaft { background: oklch(82% 0.12 195); }
+.cat-default      { background: var(--color-ink-2); }
+
+/* ===== Hero ===== */
+.hero { display: grid; gap: var(--space-md); margin: var(--space-lg) 0 var(--space-xl); }
+.hero-item {
+  position: relative; overflow: hidden; border-radius: var(--radius-lg);
+  border: 1px solid var(--color-line); background: var(--color-paper-2);
+  display: flex; align-items: flex-end; cursor: pointer; min-height: 220px;
+  text-align: left;
+}
+.hero-item:hover { border-color: var(--color-accent); }
+.hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.hero-ph { position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(120% 120% at 30% 20%, oklch(30% 0.05 260), transparent 60%), linear-gradient(135deg, var(--color-paper-3), var(--color-paper)); }
+.hero-ph span { font-family: var(--font-body); font-weight: 800; color: var(--color-ink-3); opacity: 0.5; font-size: var(--text-lg); letter-spacing: 0.04em; }
+.hero-shade { position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, transparent 25%, oklch(8% 0.01 260 / 0.55) 65%, oklch(8% 0.01 260 / 0.9) 100%); }
+.hero-body { position: relative; z-index: 2; padding: var(--space-lg); display: grid; gap: var(--space-sm); width: 100%; }
+.hero-meta { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-2); display: flex; gap: 0.6em; align-items: center; flex-wrap: wrap; }
+.hero-main h2 { font-family: var(--font-body); font-weight: 800; font-size: clamp(1.5rem, 3.4vw, 2.3rem); line-height: 1.08; letter-spacing: -0.01em; color: var(--color-ink); }
+.hero-side h3 { font-family: var(--font-body); font-weight: 700; font-size: var(--text-md); line-height: 1.16; color: var(--color-ink); }
+.hero-main { min-height: 300px; }
+.hero-side-list { display: grid; gap: var(--space-md); }
+.hero-side .hero-body { padding: var(--space-md); gap: var(--space-2xs); }
+@media (min-width: 900px) {
+  .hero { grid-template-columns: 1.55fr 1fr; align-items: stretch; }
+  .hero-main { min-height: 460px; }
+  .hero-side-list { grid-auto-rows: 1fr; }
+}
+
+/* ===== Reader-Sheet ===== */
+.reader { display: grid; gap: var(--space-md); }
+.reader-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--radius-md); display: block; background: var(--color-paper-3); }
+.reader-sum { color: var(--color-ink-2); font-size: var(--text-md); line-height: 1.7; white-space: pre-wrap; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <p class="kicker" id="dateline">Tägliches Briefing · Deutsch</p>
-    <div class="header-row">
-      <h1>Was die KI-Welt heute <span class="verb">bewegt</span>.</h1>
-      <div class="header-actions">
-        <button class="btn icon-btn" id="refreshBtn" type="button" aria-label="Neue Artikel sammeln" title="Neue Artikel sammeln">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
-        </button>
-        <button class="btn icon-btn" id="settingsBtn" type="button" aria-label="Einstellungen" title="Einstellungen">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </button>
-        <button class="btn" id="quizAllBtn" type="button">Quiz</button>
-        <button class="btn btn-accent" id="tutorBtn" type="button">Fragen</button>
-      </div>
+  <nav class="nav">
+    <button class="nav-search" id="searchToggle" type="button" aria-label="Suche" title="Suche">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <span class="nav-brand">KI<b>//</b>BRIEFING</span>
+    <div class="nav-cats" id="navCats" role="group" aria-label="Kategorien"></div>
+    <div class="nav-actions">
+      <button class="btn icon-btn" id="refreshBtn" type="button" aria-label="Neue Artikel sammeln" title="Neue Artikel sammeln">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
+      </button>
+      <button class="btn icon-btn" id="settingsBtn" type="button" aria-label="Einstellungen" title="Einstellungen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <button class="btn" id="quizAllBtn" type="button">Quiz</button>
+      <button class="btn btn-accent" id="tutorBtn" type="button">Fragen</button>
     </div>
-  </header>
+  </nav>
 
-  <div class="stats" id="stats" hidden>
-    <div class="stat"><b id="statToday">0</b><span>Heute</span></div>
-    <div class="stat"><b id="statWeek">0</b><span>7 Tage</span></div>
-    <div class="stat"><b id="statTotal">0</b><span>Gesamt</span></div>
-  </div>
-
-  <div class="toolbar" id="toolbar" hidden>
+  <div class="searchbar" id="searchbar" hidden>
     <input class="search" id="searchInput" type="search" placeholder="Artikel durchsuchen …" autocomplete="off">
-    <div class="filters" id="filters" role="group" aria-label="Artikel filtern"></div>
   </div>
+
+  <section class="hero" id="hero" aria-label="Top-Meldungen"></section>
 
   <main id="feed" class="feed" aria-live="polite">
     <div class="skeleton"></div>
@@ -801,7 +881,39 @@ var API = "https://flowi-n8n.de/webhook";
 var articles = [];
 var chatContext = "";
 var appKey = localStorage.getItem("ki-briefing-key") || "";
-var filterState = { quelle: "alle", suche: "" };
+var filterState = { kat: "alle", suche: "" };
+
+/* Kategorien (KI-Themen) */
+var CATS = [
+  { id: "alle",         label: "Alle",          cls: "cat-default" },
+  { id: "modelle",      label: "Modelle",       cls: "cat-modelle",
+    kw: ["sprachmodell", " modell", "-modell", "gpt", "llm", "gemini", "claude", "qwen", "llama", "mistral", "parameter", "open source", "open-source", "multimodal", "fine-tuning", "modellversion", "ki-modell"] },
+  { id: "business",     label: "Business",      cls: "cat-business",
+    kw: ["milliard", "millionen euro", "millionen dollar", "dollar", "umsatz", "investit", "funding", "startup", "börse", "aktie", "übernahme", " ipo", "bewertung", "risikokapital", "quartalszahl", "konzern", "geschäftsmodell"] },
+  { id: "tools",        label: "Tools",         cls: "cat-tools",
+    kw: ["assistent", "chatbot", "plattform", "integration", "feature", "anwendung", "-app", "app-", " app ", "produktivität", "launch", "release", "browser", "werkzeug"] },
+  { id: "forschung",    label: "Forschung",     cls: "cat-forschung",
+    kw: ["studie", "forsch", "paper", "universit", "experiment", "benchmark", "wissenschaft", "arxiv", "fachjournal"] },
+  { id: "recht",        label: "Recht & Ethik", cls: "cat-recht",
+    kw: ["urheberrecht", "copyright", "klage", "gerichts", "gerichtshof", "vor gericht", "regulier", "ethik", "verboten", "settlement", "lawsuit", "ai act", "eu-ai", "aufsichtsbehörde", "zensur", "haftung", "urheber"] },
+  { id: "gesellschaft", label: "Gesellschaft",  cls: "cat-gesellschaft",
+    kw: ["gesellschaft", "arbeitsplat", "jobs", "sozial", "bildung", "kultur", "kunst", "musik", "politik", "gesundheit", "demokrat"] }
+];
+function catById(id) { for (var i = 0; i < CATS.length; i++) if (CATS[i].id === id) return CATS[i]; return CATS[0]; }
+function categoryOf(a) {
+  if (a.kategorie) { var f = catById(String(a.kategorie).toLowerCase()); if (f.id !== "alle") return f; }
+  var t = ((a.title || "") + " " + (a.summary || "") + " " + (a.begriffe || "")).toLowerCase();
+  var order = ["recht", "business", "forschung", "modelle", "tools"];
+  for (var i = 0; i < order.length; i++) {
+    var c = catById(order[i]);
+    for (var j = 0; j < c.kw.length; j++) { if (t.indexOf(c.kw[j]) !== -1) return c; }
+  }
+  return catById("gesellschaft");
+}
+function catBadge(a) {
+  var c = categoryOf(a);
+  return el("span", "cat-badge " + c.cls, c.label);
+}
 
 function api(path, extra) {
   var body = extra || {};
@@ -851,10 +963,6 @@ function toast(msg, kind) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(function () { t.className = "toast"; }, 3200);
 }
-
-/* Datum im Header */
-document.getElementById("dateline").textContent =
-  new Date().toLocaleDateString("de-DE", { weekday: "long", day: "numeric", month: "long" }) + " · Dein Briefing";
 
 function timeLabel(iso) {
   var d = new Date(iso);
@@ -907,52 +1015,50 @@ function sourceOf(a) {
   }
   return src;
 }
-function renderFilters() {
-  var box = document.getElementById("filters");
+function renderNav() {
+  var box = document.getElementById("navCats");
   box.innerHTML = "";
-  var sources = [];
-  articles.forEach(function (a) {
-    var s = sourceOf(a);
-    if (sources.indexOf(s) === -1) sources.push(s);
-  });
-  var opts = [{ id: "alle", label: "Alle" }, { id: "heute", label: "Heute" }].concat(
-    sources.map(function (s) { return { id: s, label: s }; })
-  );
-  opts.forEach(function (o) {
-    var b = el("button", "filter-chip" + (filterState.quelle === o.id ? " on" : ""), o.label);
+  CATS.forEach(function (c) {
+    var b = el("button", "nav-cat" + (filterState.kat === c.id ? " on" : ""), c.label);
     b.type = "button";
     b.addEventListener("click", function () {
-      filterState.quelle = o.id;
-      renderFilters();
+      filterState.kat = c.id;
+      renderNav();
       render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
     box.appendChild(b);
   });
-  document.getElementById("toolbar").hidden = false;
 }
+document.getElementById("searchToggle").addEventListener("click", function () {
+  var sb = document.getElementById("searchbar");
+  sb.hidden = !sb.hidden;
+  if (!sb.hidden) document.getElementById("searchInput").focus();
+});
 document.getElementById("searchInput").addEventListener("input", function () {
   filterState.suche = this.value.trim().toLowerCase();
   render();
 });
 
+function byDateDesc(a, b) {
+  return new Date(b.pubDate || b.createdAt).getTime() - new Date(a.pubDate || a.createdAt).getTime();
+}
 function visibleArticles() {
   return articles.filter(function (a) {
-    if (filterState.quelle === "heute") {
-      if (Date.now() - new Date(a.pubDate || a.createdAt).getTime() >= 24 * 3600000) return false;
-    } else if (filterState.quelle !== "alle") {
-      if (sourceOf(a) !== filterState.quelle) return false;
-    }
+    if (filterState.kat !== "alle" && categoryOf(a).id !== filterState.kat) return false;
     if (filterState.suche) {
       var hay = (a.title + " " + (a.summary || "")).toLowerCase();
       if (hay.indexOf(filterState.suche) === -1) return false;
     }
     return true;
-  });
+  }).sort(byDateDesc);
 }
 
 function render() {
   var feed = document.getElementById("feed");
+  var hero = document.getElementById("hero");
   feed.innerHTML = "";
+  hero.innerHTML = "";
   var list = visibleArticles();
   if (!articles.length) {
     var s = el("div", "state");
@@ -964,7 +1070,9 @@ function render() {
     feed.appendChild(el("div", "state", "Keine Artikel passen zu diesem Filter."));
     return;
   }
-  list.forEach(function (a, i) {
+  renderHero(list.slice(0, 4));
+  var feedList = list.slice(4);
+  feedList.forEach(function (a, i) {
     var card = el("article", "card");
     card.style.animationDelay = Math.min(i * 60, 360) + "ms";
 
@@ -992,6 +1100,7 @@ function render() {
     }
 
     var meta = el("div", "card-meta");
+    meta.appendChild(catBadge(a));
     var isNew = (Date.now() - new Date(a.createdAt).getTime()) < 24 * 3600000;
     if (isNew) meta.appendChild(el("span", "badge-new", "Neu"));
     meta.appendChild(el("span", "src-dot"));
@@ -1049,6 +1158,92 @@ function render() {
   });
 }
 
+function renderHero(items) {
+  var hero = document.getElementById("hero");
+  hero.innerHTML = "";
+  if (!items.length) { hero.style.display = "none"; return; }
+  hero.style.display = "";
+  function heroCard(a, kind) {
+    var box = el("div", "hero-item hero-" + kind);
+    box.setAttribute("role", "button");
+    box.tabIndex = 0;
+    if (a.bild) {
+      var img = el("img", "hero-bg");
+      img.src = a.bild; img.alt = ""; img.referrerPolicy = "no-referrer";
+      img.addEventListener("error", function () {
+        var ph = el("div", "hero-ph"); ph.appendChild(el("span", null, sourceOf(a)));
+        if (img.parentNode) img.parentNode.replaceChild(ph, img);
+      });
+      box.appendChild(img);
+    } else {
+      var ph = el("div", "hero-ph"); ph.appendChild(el("span", null, sourceOf(a))); box.appendChild(ph);
+    }
+    box.appendChild(el("div", "hero-shade"));
+    var body = el("div", "hero-body");
+    var meta = el("div", "hero-meta");
+    meta.appendChild(catBadge(a));
+    meta.appendChild(el("span", null, sourceOf(a)));
+    meta.appendChild(el("span", null, "·"));
+    meta.appendChild(el("span", null, timeLabel(a.pubDate || a.createdAt)));
+    body.appendChild(meta);
+    body.appendChild(el(kind === "main" ? "h2" : "h3", null, a.title));
+    box.appendChild(body);
+    box.addEventListener("click", function () { openReader(a); });
+    box.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openReader(a); }
+    });
+    return box;
+  }
+  hero.appendChild(heroCard(items[0], "main"));
+  if (items.length > 1) {
+    var side = el("div", "hero-side-list");
+    items.slice(1, 4).forEach(function (a) { side.appendChild(heroCard(a, "side")); });
+    hero.appendChild(side);
+  }
+}
+
+function openReader(a) {
+  openSheet(a.title, false);
+  var wrap = el("div", "reader");
+  if (a.bild) {
+    var im = el("img", "reader-img");
+    im.src = a.bild; im.alt = ""; im.referrerPolicy = "no-referrer";
+    im.addEventListener("error", function () { im.remove(); });
+    wrap.appendChild(im);
+  }
+  var meta = el("div", "hero-meta");
+  meta.appendChild(catBadge(a));
+  meta.appendChild(el("span", null, sourceOf(a)));
+  meta.appendChild(el("span", null, "·"));
+  meta.appendChild(el("span", null, timeLabel(a.pubDate || a.createdAt)));
+  wrap.appendChild(meta);
+  wrap.appendChild(el("p", "reader-sum", a.summary || ""));
+  var terms = [];
+  try { terms = JSON.parse(a.begriffe || "[]"); } catch (e) {}
+  if (terms.length) {
+    var chips = el("div", "chips");
+    terms.forEach(function (t) {
+      var chip = el("button", "chip", t.begriff);
+      chip.type = "button";
+      chip.addEventListener("click", function () { openTerm(t, a); });
+      chips.appendChild(chip);
+    });
+    wrap.appendChild(chips);
+  }
+  var actions = el("div", "card-actions");
+  var ask = el("button", "btn", "Frage zum Artikel"); ask.type = "button";
+  ask.addEventListener("click", function () { openChat(a); });
+  actions.appendChild(ask);
+  var quizBtn = el("button", "btn", "Quiz"); quizBtn.type = "button";
+  quizBtn.addEventListener("click", function () { openQuiz(a); });
+  actions.appendChild(quizBtn);
+  var link = el("a"); link.href = a.url; link.target = "_blank"; link.rel = "noopener";
+  link.appendChild(el("span", "btn", "Zur Quelle"));
+  actions.appendChild(link);
+  wrap.appendChild(actions);
+  sheetBody.appendChild(wrap);
+}
+
 function loadNews() {
   if (!appKey) { showGate(""); return; }
   api("/ki-news")
@@ -1056,8 +1251,7 @@ function loadNews() {
     .then(function (data) {
       articles = Array.isArray(data) ? data : [data];
       articles = articles.filter(function (a) { return a && a.title; });
-      renderStats();
-      renderFilters();
+      renderNav();
       render();
     })
     .catch(function () {
