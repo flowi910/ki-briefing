@@ -209,7 +209,11 @@ h1 .verb {
   padding: var(--space-lg);
   animation: rise var(--dur-med) var(--ease-out) both;
   transition: border-color var(--dur-fast) var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
+.card-actions { margin-top: auto; }
 .card:hover { border-color: oklch(42% 0.04 260); }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .card-img {
@@ -220,6 +224,29 @@ h1 .verb {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   display: block;
   background: var(--color-paper-3);
+}
+.card-img-ph {
+  width: calc(100% + 2 * var(--space-lg));
+  margin: calc(-1 * var(--space-lg)) calc(-1 * var(--space-lg)) var(--space-md);
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(120% 120% at 30% 20%, oklch(32% 0.05 260) 0%, transparent 60%),
+    linear-gradient(135deg, var(--color-paper-3), var(--color-paper-2));
+  overflow: hidden;
+}
+.card-img-ph span {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  letter-spacing: 0.02em;
+  color: var(--color-ink-3);
+  opacity: 0.8;
+  text-align: center;
+  padding: 0 1rem;
 }
 .card-meta {
   display: flex;
@@ -624,7 +651,7 @@ footer {
 /* Desktop: zwei Spalten */
 @media (min-width: 900px) {
   .wrap { max-width: 1100px; }
-  .feed { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  .feed { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
   .sheet { max-width: 680px; margin: 0 auto; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 }
 
@@ -941,6 +968,11 @@ function render() {
     var card = el("article", "card");
     card.style.animationDelay = Math.min(i * 60, 360) + "ms";
 
+    function imgPlaceholder() {
+      var ph = el("div", "card-img-ph");
+      ph.appendChild(el("span", null, sourceOf(a)));
+      return ph;
+    }
     if (a.bild) {
       var img = el("img", "card-img");
       img.src = a.bild;
@@ -951,8 +983,12 @@ function render() {
         img.loading = "lazy";
       }
       img.referrerPolicy = "no-referrer";
-      img.addEventListener("error", function () { img.remove(); });
+      img.addEventListener("error", function () {
+        if (img.parentNode) img.parentNode.replaceChild(imgPlaceholder(), img);
+      });
       card.appendChild(img);
+    } else {
+      card.appendChild(imgPlaceholder());
     }
 
     var meta = el("div", "card-meta");
