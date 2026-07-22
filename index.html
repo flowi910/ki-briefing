@@ -679,7 +679,9 @@ footer {
 .nav-brand {
   font-family: var(--font-body); font-weight: 800; font-size: var(--text-md);
   letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap;
+  background: none; border: none; color: var(--color-ink); cursor: pointer; padding: 0.35rem 0;
 }
+.nav-brand:hover { color: var(--color-accent); }
 .nav-brand b { color: var(--color-accent); }
 .nav-cats {
   display: flex; gap: var(--space-md); overflow-x: auto; scrollbar-width: none;
@@ -753,7 +755,7 @@ footer {
     <button class="nav-search" id="searchToggle" type="button" aria-label="Suche" title="Suche">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </button>
-    <span class="nav-brand">KI<b>//</b>BRIEFING</span>
+    <button class="nav-brand" id="brandHome" type="button">KI<b>//</b>BRIEFING</button>
     <div class="nav-cats" id="navCats" role="group" aria-label="Kategorien"></div>
     <div class="nav-actions">
       <button class="btn icon-btn" id="refreshBtn" type="button" aria-label="Neue Artikel sammeln" title="Neue Artikel sammeln">
@@ -1025,7 +1027,7 @@ function renderNav() {
       filterState.kat = c.id;
       renderNav();
       render();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo(0, 0);
     });
     box.appendChild(b);
   });
@@ -1038,6 +1040,15 @@ document.getElementById("searchToggle").addEventListener("click", function () {
 document.getElementById("searchInput").addEventListener("input", function () {
   filterState.suche = this.value.trim().toLowerCase();
   render();
+});
+document.getElementById("brandHome").addEventListener("click", function () {
+  filterState.kat = "alle";
+  filterState.suche = "";
+  document.getElementById("searchInput").value = "";
+  document.getElementById("searchbar").hidden = true;
+  renderNav();
+  render();
+  window.scrollTo(0, 0);
 });
 
 function byDateDesc(a, b) {
